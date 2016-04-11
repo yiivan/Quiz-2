@@ -1,0 +1,38 @@
+<h1>Support Requests</h1>
+
+<%= form_tag result_path, :method => 'get'  do %>
+  <%= text_field_tag :search, params[:search]%>
+  <%= submit_tag "Search", :name => nil  %>
+<% end %>
+
+<table style = "width: 100%" border="1">
+  <tr>
+    <th style="text-align:left">Name</th>
+    <th style="text-align:left">Email</th>
+    <th style="text-align:left">Department</th>
+    <th style="text-align:left">Message</th>
+    <th style="text-align:left">Actions</th>
+  </tr>
+
+  <% @requests.each do |r|%>
+  <tr>
+    <td><%= r.name %></td>
+    <td><%= r.email %></td>
+    <td><%= r.department %></td>
+    <td><%= r.message %></td>
+    <td>
+      <%= button_to "Edit", edit_request_path(r),
+                            method: :get %>
+      <%= button_to "Delete", request_path(r),
+                            method: :delete,
+                            data: {confirm: "Are you sure you want to delete?"}%>
+      <%= form_tag done_path, method: :patch do %>
+      <%= button_tag "Not Done", data: { disable_with: "Done" }%>
+      <% end %>
+    </td>
+  </tr>
+  <% end %>
+
+</table>
+
+<%= paginate @requests %>
